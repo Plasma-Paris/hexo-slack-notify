@@ -11,7 +11,7 @@ var allimagesUrls = [];
 dbNotif.defaults({ notifs: [] }).value()
 
 console.log('[Hexo Slack]: register server_middleware');
-// console.error('[Hexo Slack]: hexo', hexo);
+console.error('[Hexo Slack]: hexo', hexo.env.version);
 
 var Slack = require('slack-node');
 
@@ -97,8 +97,8 @@ hexo.extend.filter.register('after_generate', function() {
             // console.log('[Hexo Slack]: after_post_render slackData', slackData);
 
             slack.webhook(slackData, function(err, response) {
-                if(response.statusCode != 200)
-                    console.error('[Hexo Slack]: slack.webhook err', response);
+                if(response && response.statusCode != 200) console.error('[Hexo Slack]: slack.webhook err', response);
+                if(err) console.error('[Hexo Slack]: slack.webhook err', err);
             });
 
             // // console.error('[Hexo Slack]: after_post_render data', element);
