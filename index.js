@@ -3,6 +3,8 @@
 var low = require('lowdb'), path = require('path');
 var fs = require('hexo-fs');
 
+require('global-tunnel').initialize();
+
 const dbNotif = low(path.join(hexo.base_dir, 'db-notif.json'));
 
 var postsToNotify = [];
@@ -12,6 +14,7 @@ dbNotif.defaults({ notifs: [] }).value()
 
 console.log('[Hexo Slack]: register server_middleware');
 console.error('[Hexo Slack]: hexo', hexo.env.version);
+console.error('[Hexo Slack]: process.env.http_proxy', process.env.http_proxy);
 
 var Slack = require('slack-node');
 
