@@ -1,0 +1,10 @@
+{
+  "name": "hexo-slack-notify",
+  "version": "0.0.1",
+  "main": "index",
+  "dependencies": {
+    "hexo-fs": "^0.1.6",
+    "lowdb": "^0.13.1",
+    "slack-node": "^0.1.8"
+  }
+}
