@@ -63,7 +63,7 @@ hexo.extend.filter.register('after_generate', function() {
                         title_link: encodeURI(element.permalink),
                         fields: [],
                         // image_url: "https://datadoghq.com/snapshot/path/to/snapshot.png",
-                        color : "#764FA5"
+                        color : hexo.config.slack.color || "#764FA5"
                     }
                 ]
                 // text: element.raw,
@@ -72,6 +72,9 @@ hexo.extend.filter.register('after_generate', function() {
 
             // console.error('[Hexo Slack]: Exists', path.join(element.asset_dir, 'poster.png'));
             // console.error('[Hexo Slack]: Exists', path.join(element.asset_dir, 'illustration.jpg'));
+
+            if(hexo.config.slack.icon_emoji)
+                slackData.icon_emoji = hexo.config.slack.icon_emoji; 
 
             //INFO : Gestion de l'iilustration.
             var posterSearch = hexo.config.slack.posterSearch || 'illustration.jpg|poster.png';
