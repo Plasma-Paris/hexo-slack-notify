@@ -70,6 +70,12 @@ hexo.extend.filter.register('after_generate', function() {
                 // mrkdwn: true,
             }
 
+            if(element.notifyStatus == 'updated'){
+                slackData.attachments[0].pretext = (hexo.config.slack.pretextUpdated || "Updated post on") + " <"+hexo.config.url+">";
+            }else{
+                slackData.attachments[0].pretext = (hexo.config.slack.pretextNew || "New post on") + " <"+hexo.config.url+">";
+            }
+
             // console.error('[Hexo Slack]: Exists', path.join(element.asset_dir, 'poster.png'));
             // console.error('[Hexo Slack]: Exists', path.join(element.asset_dir, 'illustration.jpg'));
 
@@ -77,7 +83,7 @@ hexo.extend.filter.register('after_generate', function() {
                 slackData.icon_emoji = hexo.config.slack.icon_emoji; 
 
             //INFO : Gestion de l'iilustration.
-            var posterSearch = hexo.config.slack.posterSearch || 'illustration.jpg|poster.png';
+            var posterSearch = hexo.config.slack.posterSearch || 'illustration.png|illustration.jpg|poster.png|poster.jpg';
             var posterSearchList = posterSearch ? posterSearch.split("|") : [];
             posterSearchList.every(function(searchValue) {
                 searchValue = searchValue.trim();
@@ -137,11 +143,24 @@ hexo.extend.filter.register('after_generate', function() {
 
 hexo.extend.filter.register('after_post_render', function(data){
 
-    var lNotif = dbNotif.get('notifs').find({ slug: data.slug }).value()
+    var lNotif = dbNotif.get('notifs').find({ slug: data.slug }).value();
     // console.log('[Hexo Slack]: after_post_render find by slug', data.slug, !lNotif);
 
     if(!lNotif){
-        dbNotif.get('notifs').push({ id: data._id, slug: data.slug, date: data.date, updated: data.updated}).value()
-        postsToNotify.push(data);
-    }
+        dbNotif.get('notifs').push({ id: data._id, slug: data.slug, date: data.date, updated: data.updated}).value();
+        data['notifyStatus'] = 'new';
+        postsToNotify.push();
+    }else{
+
+		if(!lNotif.updated || new Date(lNotif.updated) < data.updated.toDate()){
+			//INFO : updated post.
+            // console.log('[Hexo Slack]: notify: updated post > data.updated.toDate', data.updated.toDate());
+            // console.log('[Hexo Slack]: notify: updated post > lNotif.updated', new Date(lNotif.updated));
+
+            dbNotif.get('notifs').find({ slug: data.slug }).assign({updated: data.updated}).value();
+
+            data['notifyStatus'] = 'updated';
+			postsToNotify.push(data);
+		}
+	}
 });
