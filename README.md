@@ -24,7 +24,9 @@ slack:
 
 
 
-####  ![slack_config](README\slack_config.png)webhookUri
+![slack_config](README/slack_config.png)
+
+#### webhookUri
 
 Webhook URL for Incoming WebHooks Slack
 
