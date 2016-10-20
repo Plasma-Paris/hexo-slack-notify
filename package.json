@@ -1,6 +1,6 @@
 {
   "name": "hexo-slack-notify",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index",
   "dependencies": {
     "hexo-fs": "^0.1.6",

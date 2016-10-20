@@ -149,7 +149,7 @@ hexo.extend.filter.register('after_post_render', function(data){
     if(!lNotif){
         dbNotif.get('notifs').push({ id: data._id, slug: data.slug, date: data.date, updated: data.updated}).value();
         data['notifyStatus'] = 'new';
-        postsToNotify.push();
+        postsToNotify.push(data);
     }else{
 
 		if(!lNotif.updated || new Date(lNotif.updated) < data.updated.toDate()){
