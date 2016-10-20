@@ -67,3 +67,14 @@ name of user post notify.
 #### fieldTitle
 
 Title for field
+
+## Configuration  Proxy
+
+plugin use global-tunnel for request proxy.
+
+```sh
+set HTTP_PROXY=http://[IP]:[PORT]/
+```
+
+Set `HTTP_PROXY` before start `hexo`.
+
